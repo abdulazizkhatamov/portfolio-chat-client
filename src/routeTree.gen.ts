@@ -11,9 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AppRouteImport } from './routes/_app'
-import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AppLayoutRouteImport } from './routes/_app/_layout'
+import { Route as AppLayoutIndexRouteImport } from './routes/_app/_layout.index'
+import { Route as AppLayoutGroupsRouteImport } from './routes/_app/_layout.groups'
+import { Route as AppLayoutDmsRouteImport } from './routes/_app/_layout.dms'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
@@ -22,11 +25,6 @@ const AuthRoute = AuthRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AppIndexRoute = AppIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppRoute,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
@@ -38,37 +36,66 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
+const AppLayoutRoute = AppLayoutRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLayoutIndexRoute = AppLayoutIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppLayoutGroupsRoute = AppLayoutGroupsRouteImport.update({
+  id: '/groups',
+  path: '/groups',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppLayoutDmsRoute = AppLayoutDmsRouteImport.update({
+  id: '/dms',
+  path: '/dms',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
-  '/': typeof AppIndexRoute
+  '/dms': typeof AppLayoutDmsRoute
+  '/groups': typeof AppLayoutGroupsRoute
+  '/': typeof AppLayoutIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
-  '/': typeof AppIndexRoute
+  '/dms': typeof AppLayoutDmsRoute
+  '/groups': typeof AppLayoutGroupsRoute
+  '/': typeof AppLayoutIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
+  '/_app/_layout': typeof AppLayoutRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
-  '/_app/': typeof AppIndexRoute
+  '/_app/_layout/dms': typeof AppLayoutDmsRoute
+  '/_app/_layout/groups': typeof AppLayoutGroupsRoute
+  '/_app/_layout/': typeof AppLayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/register' | '/'
+  fullPaths: '/login' | '/register' | '/dms' | '/groups' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/register' | '/'
+  to: '/login' | '/register' | '/dms' | '/groups' | '/'
   id:
     | '__root__'
     | '/_app'
     | '/_auth'
+    | '/_app/_layout'
     | '/_auth/login'
     | '/_auth/register'
-    | '/_app/'
+    | '/_app/_layout/dms'
+    | '/_app/_layout/groups'
+    | '/_app/_layout/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -92,13 +119,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/': {
-      id: '/_app/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_auth/register': {
       id: '/_auth/register'
       path: '/register'
@@ -113,15 +133,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_app/_layout': {
+      id: '/_app/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AppLayoutRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/_layout/': {
+      id: '/_app/_layout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AppLayoutIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/_layout/groups': {
+      id: '/_app/_layout/groups'
+      path: '/groups'
+      fullPath: '/groups'
+      preLoaderRoute: typeof AppLayoutGroupsRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/_layout/dms': {
+      id: '/_app/_layout/dms'
+      path: '/dms'
+      fullPath: '/dms'
+      preLoaderRoute: typeof AppLayoutDmsRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
   }
 }
 
+interface AppLayoutRouteChildren {
+  AppLayoutDmsRoute: typeof AppLayoutDmsRoute
+  AppLayoutGroupsRoute: typeof AppLayoutGroupsRoute
+  AppLayoutIndexRoute: typeof AppLayoutIndexRoute
+}
+
+const AppLayoutRouteChildren: AppLayoutRouteChildren = {
+  AppLayoutDmsRoute: AppLayoutDmsRoute,
+  AppLayoutGroupsRoute: AppLayoutGroupsRoute,
+  AppLayoutIndexRoute: AppLayoutIndexRoute,
+}
+
+const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
+  AppLayoutRouteChildren,
+)
+
 interface AppRouteChildren {
-  AppIndexRoute: typeof AppIndexRoute
+  AppLayoutRoute: typeof AppLayoutRouteWithChildren
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppIndexRoute: AppIndexRoute,
+  AppLayoutRoute: AppLayoutRouteWithChildren,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

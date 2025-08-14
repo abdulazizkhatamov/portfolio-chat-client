@@ -1,21 +1,21 @@
-import axiosInstance from '@/libs/axiosInstance'
+import axiosInstance from '@/lib/axiosInstance'
 
 // Login request
-export const postAuthLogin = async (user: {
+export const postAuthLogin = async (payload: {
   email: string
   password: string
 }) => {
-  const { data } = await axiosInstance.post('/auth/login', user)
+  const { data } = await axiosInstance.post('/auth/login', payload)
   return data
 }
 
 // Register request
-export const postAuthRegister = async (user: {
+export const postAuthRegister = async (payload: {
   first_name: string
   last_name: string
   email: string
   password: string
 }) => {
-  const { data } = await axiosInstance.post('/auth/register', user)
+  const { data } = await axiosInstance.post('/auth/register', payload)
   return data
 }

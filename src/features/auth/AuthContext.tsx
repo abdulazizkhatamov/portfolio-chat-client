@@ -1,5 +1,5 @@
 import React from 'react'
-import axiosInstance from '@/libs/axiosInstance'
+import axiosInstance from '@/lib/axiosInstance'
 
 export interface User {
   id: string

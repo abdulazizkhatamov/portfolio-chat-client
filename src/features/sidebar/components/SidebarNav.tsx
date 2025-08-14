@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
-interface NavProps {
+interface SidebarNavProps {
   isCollapsed: boolean
   links: Array<{
     title: string
@@ -19,7 +19,7 @@ interface NavProps {
   }>
 }
 
-export function Nav({ links, isCollapsed }: NavProps) {
+export function SidebarNav({ links, isCollapsed }: SidebarNavProps) {
   const router = useRouterState()
 
   return (

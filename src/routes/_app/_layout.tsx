@@ -1,18 +1,15 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router'
-import { InboxIcon, UserIcon, Users2Icon } from 'lucide-react'
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable'
-import { Separator } from '@/components/ui/separator'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { accounts, chats } from '@/features/chat/data'
+import { chats } from '@/features/chat/data'
 import { cn } from '@/lib/utils'
-import { AccountSwitcher } from '@/features/chat/components/AccountSwitcher'
-import { Nav } from '@/features/chat/components/Nav'
 import { useChat } from '@/features/chat/ChatContext'
 import { ChatDisplay } from '@/features/chat/components/ChatDisplay'
+import Sidebar from '@/features/sidebar/components/Sidebar'
 
 export const Route = createFileRoute('/_app/_layout')({
   component: RouteComponent,
@@ -52,39 +49,7 @@ function RouteComponent() {
                 'min-w-[50px] transition-all duration-300 ease-in-out',
             )}
           >
-            <div
-              className={cn(
-                'flex h-[52px] items-center justify-center',
-                isCollapsed ? 'h-[52px]' : 'px-2',
-              )}
-            >
-              <AccountSwitcher isCollapsed={isCollapsed} accounts={accounts} />
-            </div>
-            <Separator />
-            <Nav
-              isCollapsed={isCollapsed}
-              links={[
-                {
-                  title: 'All chats',
-                  label: '128',
-                  icon: InboxIcon,
-                  href: '/',
-                },
-                {
-                  title: 'Private chats',
-                  label: '972',
-                  icon: UserIcon,
-                  href: '/dms',
-                },
-                {
-                  title: 'Groups',
-                  label: '972',
-                  icon: Users2Icon,
-                  href: '/groups',
-                },
-              ]}
-            />
-            <Separator />
+            <Sidebar />
           </ResizablePanel>
 
           <ResizableHandle withHandle />

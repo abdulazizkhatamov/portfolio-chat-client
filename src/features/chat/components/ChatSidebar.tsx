@@ -1,12 +1,12 @@
 import { InboxIcon, UserIcon, Users2Icon } from 'lucide-react'
 import { Separator } from '@/shared/components/ui/separator'
-import { SidebarNav } from '@/features/sidebar/components/SidebarNav'
+import { SidebarNav } from '@/features/chat/components/ChatSidebarNav'
 import { cn } from '@/core/lib/utils'
-import { SidebarMenu } from '@/features/sidebar/components/SidebarMenu'
-import { useChat } from '@/features/chat/hooks/useChat'
+import { SidebarMenu } from '@/features/chat/components/ChatSidebarMenu'
+import { useChatLayout } from '@/features/chat/hooks/useChatLayout'
 
-export default function Sidebar() {
-  const { isCollapsed } = useChat()
+export default function ChatSidebar() {
+  const { isCollapsed } = useChatLayout()
   return (
     <>
       <div

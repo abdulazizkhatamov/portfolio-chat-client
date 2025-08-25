@@ -10,21 +10,35 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as AppRouteImport } from './routes/_app'
+import { Route as ChatRouteRouteImport } from './routes/_chat/route'
+import { Route as ChatIndexRouteImport } from './routes/_chat/index'
+import { Route as ChatGroupsRouteImport } from './routes/_chat/groups'
+import { Route as ChatContactsRouteImport } from './routes/_chat/contacts'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
-import { Route as AppLayoutRouteImport } from './routes/_app/_layout'
-import { Route as AppLayoutIndexRouteImport } from './routes/_app/_layout.index'
-import { Route as AppLayoutGroupsRouteImport } from './routes/_app/_layout.groups'
-import { Route as AppLayoutContactsRouteImport } from './routes/_app/_layout.contacts'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
+const ChatRouteRoute = ChatRouteRouteImport.update({
+  id: '/_chat',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ChatIndexRoute = ChatIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ChatRouteRoute,
+} as any)
+const ChatGroupsRoute = ChatGroupsRouteImport.update({
+  id: '/groups',
+  path: '/groups',
+  getParentRoute: () => ChatRouteRoute,
+} as any)
+const ChatContactsRoute = ChatContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => ChatRouteRoute,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
@@ -36,50 +50,30 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
-const AppLayoutRoute = AppLayoutRouteImport.update({
-  id: '/_layout',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppLayoutIndexRoute = AppLayoutIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppLayoutRoute,
-} as any)
-const AppLayoutGroupsRoute = AppLayoutGroupsRouteImport.update({
-  id: '/groups',
-  path: '/groups',
-  getParentRoute: () => AppLayoutRoute,
-} as any)
-const AppLayoutContactsRoute = AppLayoutContactsRouteImport.update({
-  id: '/contacts',
-  path: '/contacts',
-  getParentRoute: () => AppLayoutRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
-  '/contacts': typeof AppLayoutContactsRoute
-  '/groups': typeof AppLayoutGroupsRoute
-  '/': typeof AppLayoutIndexRoute
+  '/contacts': typeof ChatContactsRoute
+  '/groups': typeof ChatGroupsRoute
+  '/': typeof ChatIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
-  '/contacts': typeof AppLayoutContactsRoute
-  '/groups': typeof AppLayoutGroupsRoute
-  '/': typeof AppLayoutIndexRoute
+  '/contacts': typeof ChatContactsRoute
+  '/groups': typeof ChatGroupsRoute
+  '/': typeof ChatIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_app': typeof AppRouteWithChildren
+  '/_chat': typeof ChatRouteRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
-  '/_app/_layout': typeof AppLayoutRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
-  '/_app/_layout/contacts': typeof AppLayoutContactsRoute
-  '/_app/_layout/groups': typeof AppLayoutGroupsRoute
-  '/_app/_layout/': typeof AppLayoutIndexRoute
+  '/_chat/contacts': typeof ChatContactsRoute
+  '/_chat/groups': typeof ChatGroupsRoute
+  '/_chat/': typeof ChatIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -88,18 +82,17 @@ export interface FileRouteTypes {
   to: '/login' | '/register' | '/contacts' | '/groups' | '/'
   id:
     | '__root__'
-    | '/_app'
+    | '/_chat'
     | '/_auth'
-    | '/_app/_layout'
     | '/_auth/login'
     | '/_auth/register'
-    | '/_app/_layout/contacts'
-    | '/_app/_layout/groups'
-    | '/_app/_layout/'
+    | '/_chat/contacts'
+    | '/_chat/groups'
+    | '/_chat/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AppRoute: typeof AppRouteWithChildren
+  ChatRouteRoute: typeof ChatRouteRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
 }
 
@@ -112,12 +105,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app': {
-      id: '/_app'
+    '/_chat': {
+      id: '/_chat'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AppRouteImport
+      preLoaderRoute: typeof ChatRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_chat/': {
+      id: '/_chat/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof ChatIndexRouteImport
+      parentRoute: typeof ChatRouteRoute
+    }
+    '/_chat/groups': {
+      id: '/_chat/groups'
+      path: '/groups'
+      fullPath: '/groups'
+      preLoaderRoute: typeof ChatGroupsRouteImport
+      parentRoute: typeof ChatRouteRoute
+    }
+    '/_chat/contacts': {
+      id: '/_chat/contacts'
+      path: '/contacts'
+      fullPath: '/contacts'
+      preLoaderRoute: typeof ChatContactsRouteImport
+      parentRoute: typeof ChatRouteRoute
     }
     '/_auth/register': {
       id: '/_auth/register'
@@ -133,62 +147,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_app/_layout': {
-      id: '/_app/_layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AppLayoutRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/_layout/': {
-      id: '/_app/_layout/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AppLayoutIndexRouteImport
-      parentRoute: typeof AppLayoutRoute
-    }
-    '/_app/_layout/groups': {
-      id: '/_app/_layout/groups'
-      path: '/groups'
-      fullPath: '/groups'
-      preLoaderRoute: typeof AppLayoutGroupsRouteImport
-      parentRoute: typeof AppLayoutRoute
-    }
-    '/_app/_layout/contacts': {
-      id: '/_app/_layout/contacts'
-      path: '/contacts'
-      fullPath: '/contacts'
-      preLoaderRoute: typeof AppLayoutContactsRouteImport
-      parentRoute: typeof AppLayoutRoute
-    }
   }
 }
 
-interface AppLayoutRouteChildren {
-  AppLayoutContactsRoute: typeof AppLayoutContactsRoute
-  AppLayoutGroupsRoute: typeof AppLayoutGroupsRoute
-  AppLayoutIndexRoute: typeof AppLayoutIndexRoute
+interface ChatRouteRouteChildren {
+  ChatContactsRoute: typeof ChatContactsRoute
+  ChatGroupsRoute: typeof ChatGroupsRoute
+  ChatIndexRoute: typeof ChatIndexRoute
 }
 
-const AppLayoutRouteChildren: AppLayoutRouteChildren = {
-  AppLayoutContactsRoute: AppLayoutContactsRoute,
-  AppLayoutGroupsRoute: AppLayoutGroupsRoute,
-  AppLayoutIndexRoute: AppLayoutIndexRoute,
+const ChatRouteRouteChildren: ChatRouteRouteChildren = {
+  ChatContactsRoute: ChatContactsRoute,
+  ChatGroupsRoute: ChatGroupsRoute,
+  ChatIndexRoute: ChatIndexRoute,
 }
 
-const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
-  AppLayoutRouteChildren,
+const ChatRouteRouteWithChildren = ChatRouteRoute._addFileChildren(
+  ChatRouteRouteChildren,
 )
-
-interface AppRouteChildren {
-  AppLayoutRoute: typeof AppLayoutRouteWithChildren
-}
-
-const AppRouteChildren: AppRouteChildren = {
-  AppLayoutRoute: AppLayoutRouteWithChildren,
-}
-
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 interface AuthRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
@@ -203,7 +179,7 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  AppRoute: AppRouteWithChildren,
+  ChatRouteRoute: ChatRouteRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
 }
 export const routeTree = rootRouteImport

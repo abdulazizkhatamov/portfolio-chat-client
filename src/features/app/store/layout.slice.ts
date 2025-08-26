@@ -1,4 +1,4 @@
-// features/chat/store/chatLayout.slice.ts
+// features/app/store/layout.slice.ts
 import { createSlice } from '@reduxjs/toolkit'
 import Cookies from 'js-cookie'
 import type { PayloadAction } from '@reduxjs/toolkit'
@@ -14,27 +14,27 @@ const loadFromCookies = <T>(key: string, fallback: T): T => {
   }
 }
 
-export interface ChatLayoutState {
+export interface AppLayoutState {
   defaultLayout: Array<number>
   isCollapsed: boolean
 }
 
-const initialState: ChatLayoutState = {
+const initialState: AppLayoutState = {
   defaultLayout: loadFromCookies(
-    'react-resizable-panels:layout:chat',
+    'react-resizable-panels:layout:app',
     [20, 32, 48],
   ),
   isCollapsed: loadFromCookies('react-resizable-panels:collapsed', false),
 }
 
-const chatLayoutSlice = createSlice({
-  name: 'chatLayout',
+const appLayoutSlice = createSlice({
+  name: 'appLayout',
   initialState,
   reducers: {
     setDefaultLayout: (state, action: PayloadAction<Array<number>>) => {
       state.defaultLayout = action.payload
       Cookies.set(
-        'react-resizable-panels:layout:chat',
+        'react-resizable-panels:layout:app',
         JSON.stringify(state.defaultLayout),
       )
     },
@@ -48,5 +48,5 @@ const chatLayoutSlice = createSlice({
   },
 })
 
-export const { setDefaultLayout, setIsCollapsed } = chatLayoutSlice.actions
-export default chatLayoutSlice.reducer
+export const { setDefaultLayout, setIsCollapsed } = appLayoutSlice.actions
+export default appLayoutSlice.reducer

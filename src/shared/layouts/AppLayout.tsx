@@ -6,27 +6,23 @@ import {
   ResizablePanelGroup,
 } from '@/shared/components/ui/resizable'
 import { cn } from '@/core/lib/utils'
-import { useChatLayout } from '@/features/chat/hooks/useChatLayout'
+import { useAppLayout } from '@/features/app/hooks/useAppLayout'
 
-interface ResizableChatLayoutProps {
+interface AppLayoutProps {
   left: React.ReactNode
   middle: React.ReactNode
   right: React.ReactNode
 }
 
-export default function ResizableChatLayout({
-  left,
-  middle,
-  right,
-}: ResizableChatLayoutProps) {
-  const { defaultLayout, isCollapsed, setIsCollapsed } = useChatLayout()
+export default function AppLayout({ left, middle, right }: AppLayoutProps) {
+  const { defaultLayout, isCollapsed, setIsCollapsed } = useAppLayout()
 
   return (
     <TooltipProvider delayDuration={0}>
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(sizes: Array<number>) => {
-          document.cookie = `react-resizable-panels:layout:chat=${JSON.stringify(sizes)}`
+          document.cookie = `react-resizable-panels:layout:app=${JSON.stringify(sizes)}`
         }}
         className="h-full max-h-screen items-stretch"
       >
@@ -55,7 +51,7 @@ export default function ResizableChatLayout({
         <ResizableHandle withHandle />
 
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-          {middle}
+          <div className="relative h-screen">{middle}</div>
         </ResizablePanel>
 
         <ResizableHandle withHandle />

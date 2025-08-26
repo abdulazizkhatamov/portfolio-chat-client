@@ -6,9 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
-import RegisterForm from '@/features/auth/components/RegisterForm'
+import LoginForm from '@/features/auth/components/LoginForm'
 
-export const Route = createFileRoute('/_auth/register')({
+export const Route = createFileRoute('/(auth)/login')({
   component: RouteComponent,
 })
 
@@ -17,13 +17,13 @@ function RouteComponent() {
     <div className={'flex flex-col gap-6'}>
       <Card>
         <CardHeader>
-          <CardTitle>Create a new account</CardTitle>
+          <CardTitle>Login to your account</CardTitle>
           <CardDescription>
-            Enter your email and password below to create a new account
+            Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <RegisterForm />
+          <LoginForm />
         </CardContent>
       </Card>
     </div>

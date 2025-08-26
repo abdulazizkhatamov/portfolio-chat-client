@@ -11,7 +11,7 @@ interface SidebarMenuProps {
   isCollapsed: boolean
 }
 
-export function SidebarMenu({ isCollapsed }: SidebarMenuProps) {
+export function AppSidebarMenu({ isCollapsed }: SidebarMenuProps) {
   return (
     <>
       <DropdownMenu>

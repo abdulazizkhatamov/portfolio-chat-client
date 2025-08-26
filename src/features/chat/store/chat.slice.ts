@@ -2,8 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import Cookies from 'js-cookie'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { Chat } from '@/features/chat/data'
-import { chats } from '@/features/chat/data'
+import type { Chat } from '../api/chat.types'
 
 // helper
 const loadFromCookies = <T>(key: string, fallback: T): T => {
@@ -17,21 +16,18 @@ const loadFromCookies = <T>(key: string, fallback: T): T => {
 }
 
 export interface ChatState {
-  selectedChatId: Chat['id'] | null
+  selectedChatId: Chat['_id'] | null
 }
 
 const initialState: ChatState = {
-  selectedChatId: loadFromCookies(
-    'chat:selected',
-    chats.length > 0 ? chats[0].id : null,
-  ),
+  selectedChatId: loadFromCookies('chat:selected', null),
 }
 
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    setSelectedChatId: (state, action: PayloadAction<Chat['id'] | null>) => {
+    setSelectedChatId: (state, action: PayloadAction<Chat['_id'] | null>) => {
       state.selectedChatId = action.payload
       Cookies.set('chat:selected', JSON.stringify(state.selectedChatId))
     },

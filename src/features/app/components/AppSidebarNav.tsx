@@ -19,7 +19,7 @@ interface SidebarNavProps {
   }>
 }
 
-export function SidebarNav({ links, isCollapsed }: SidebarNavProps) {
+export function AppSidebarNav({ links, isCollapsed }: SidebarNavProps) {
   const router = useRouterState()
 
   return (

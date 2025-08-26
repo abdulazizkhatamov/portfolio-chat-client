@@ -1,15 +1,11 @@
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { postConversations } from '@/features/sidebar/conversationsApi'
+import { postChat } from '../api/chat.api'
 import { getAxiosErrorMessage } from '@/core/errors/axios.error'
 
-export const usePostConversations = () => {
+export const useCreateChat = () => {
   return useMutation({
-    mutationFn: postConversations,
-    onSuccess: (response) => {
-      //   window.location.href = '/'
-      console.log(response)
-    },
+    mutationFn: postChat,
     onError: (error) => {
       const message = getAxiosErrorMessage(error)
       toast.error(message, {

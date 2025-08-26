@@ -1,10 +1,19 @@
+import * as Yup from 'yup'
 import { Formik } from 'formik'
 import { Link } from '@tanstack/react-router'
-import { Label } from '@/shared/components/ui/label'
-import { Input } from '@/shared/components/ui/input'
-import { Button } from '@/shared/components/ui/button'
 import { useLogin } from '@/features/auth/hooks/useAuthMutation'
-import { SigninSchema } from '@/features/auth/schemas/form.schema'
+import { Button } from '@/shared/components/ui/button'
+import { Input } from '@/shared/components/ui/input'
+import { Label } from '@/shared/components/ui/label'
+
+export const SigninSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Please enter a valid email address')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
+})
 
 export default function LoginForm() {
   const login = useLogin()

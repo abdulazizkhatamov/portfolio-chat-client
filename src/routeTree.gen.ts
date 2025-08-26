@@ -9,178 +9,161 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as ChatRouteRouteImport } from './routes/_chat/route'
-import { Route as ChatIndexRouteImport } from './routes/_chat/index'
-import { Route as ChatGroupsRouteImport } from './routes/_chat/groups'
-import { Route as ChatContactsRouteImport } from './routes/_chat/contacts'
-import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
-import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as authRouteRouteImport } from './routes/(auth)/route'
+import { Route as appRouteRouteImport } from './routes/(app)/route'
+import { Route as appIndexRouteImport } from './routes/(app)/index'
+import { Route as authRegisterRouteImport } from './routes/(auth)/register'
+import { Route as authLoginRouteImport } from './routes/(auth)/login'
+import { Route as appProfileRouteImport } from './routes/(app)/profile'
 
-const AuthRoute = AuthRouteImport.update({
-  id: '/_auth',
+const authRouteRoute = authRouteRouteImport.update({
+  id: '/(auth)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ChatRouteRoute = ChatRouteRouteImport.update({
-  id: '/_chat',
+const appRouteRoute = appRouteRouteImport.update({
+  id: '/(app)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ChatIndexRoute = ChatIndexRouteImport.update({
+const appIndexRoute = appIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => ChatRouteRoute,
+  getParentRoute: () => appRouteRoute,
 } as any)
-const ChatGroupsRoute = ChatGroupsRouteImport.update({
-  id: '/groups',
-  path: '/groups',
-  getParentRoute: () => ChatRouteRoute,
-} as any)
-const ChatContactsRoute = ChatContactsRouteImport.update({
-  id: '/contacts',
-  path: '/contacts',
-  getParentRoute: () => ChatRouteRoute,
-} as any)
-const AuthRegisterRoute = AuthRegisterRouteImport.update({
+const authRegisterRoute = authRegisterRouteImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => authRouteRoute,
 } as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
+const authLoginRoute = authLoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => authRouteRoute,
+} as any)
+const appProfileRoute = appProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => appRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/login': typeof AuthLoginRoute
-  '/register': typeof AuthRegisterRoute
-  '/contacts': typeof ChatContactsRoute
-  '/groups': typeof ChatGroupsRoute
-  '/': typeof ChatIndexRoute
+  '/': typeof appIndexRoute
+  '/profile': typeof appProfileRoute
+  '/login': typeof authLoginRoute
+  '/register': typeof authRegisterRoute
 }
 export interface FileRoutesByTo {
-  '/login': typeof AuthLoginRoute
-  '/register': typeof AuthRegisterRoute
-  '/contacts': typeof ChatContactsRoute
-  '/groups': typeof ChatGroupsRoute
-  '/': typeof ChatIndexRoute
+  '/': typeof appIndexRoute
+  '/profile': typeof appProfileRoute
+  '/login': typeof authLoginRoute
+  '/register': typeof authRegisterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_chat': typeof ChatRouteRouteWithChildren
-  '/_auth': typeof AuthRouteWithChildren
-  '/_auth/login': typeof AuthLoginRoute
-  '/_auth/register': typeof AuthRegisterRoute
-  '/_chat/contacts': typeof ChatContactsRoute
-  '/_chat/groups': typeof ChatGroupsRoute
-  '/_chat/': typeof ChatIndexRoute
+  '/(app)': typeof appRouteRouteWithChildren
+  '/(auth)': typeof authRouteRouteWithChildren
+  '/(app)/profile': typeof appProfileRoute
+  '/(auth)/login': typeof authLoginRoute
+  '/(auth)/register': typeof authRegisterRoute
+  '/(app)/': typeof appIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/register' | '/contacts' | '/groups' | '/'
+  fullPaths: '/' | '/profile' | '/login' | '/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/register' | '/contacts' | '/groups' | '/'
+  to: '/' | '/profile' | '/login' | '/register'
   id:
     | '__root__'
-    | '/_chat'
-    | '/_auth'
-    | '/_auth/login'
-    | '/_auth/register'
-    | '/_chat/contacts'
-    | '/_chat/groups'
-    | '/_chat/'
+    | '/(app)'
+    | '/(auth)'
+    | '/(app)/profile'
+    | '/(auth)/login'
+    | '/(auth)/register'
+    | '/(app)/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  ChatRouteRoute: typeof ChatRouteRouteWithChildren
-  AuthRoute: typeof AuthRouteWithChildren
+  appRouteRoute: typeof appRouteRouteWithChildren
+  authRouteRoute: typeof authRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_chat': {
-      id: '/_chat'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof ChatRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_chat/': {
-      id: '/_chat/'
+    '/(auth)': {
+      id: '/(auth)'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof ChatIndexRouteImport
-      parentRoute: typeof ChatRouteRoute
+      preLoaderRoute: typeof authRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_chat/groups': {
-      id: '/_chat/groups'
-      path: '/groups'
-      fullPath: '/groups'
-      preLoaderRoute: typeof ChatGroupsRouteImport
-      parentRoute: typeof ChatRouteRoute
+    '/(app)': {
+      id: '/(app)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof appRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_chat/contacts': {
-      id: '/_chat/contacts'
-      path: '/contacts'
-      fullPath: '/contacts'
-      preLoaderRoute: typeof ChatContactsRouteImport
-      parentRoute: typeof ChatRouteRoute
+    '/(app)/': {
+      id: '/(app)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof appIndexRouteImport
+      parentRoute: typeof appRouteRoute
     }
-    '/_auth/register': {
-      id: '/_auth/register'
+    '/(auth)/register': {
+      id: '/(auth)/register'
       path: '/register'
       fullPath: '/register'
-      preLoaderRoute: typeof AuthRegisterRouteImport
-      parentRoute: typeof AuthRoute
+      preLoaderRoute: typeof authRegisterRouteImport
+      parentRoute: typeof authRouteRoute
     }
-    '/_auth/login': {
-      id: '/_auth/login'
+    '/(auth)/login': {
+      id: '/(auth)/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRoute
+      preLoaderRoute: typeof authLoginRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(app)/profile': {
+      id: '/(app)/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof appProfileRouteImport
+      parentRoute: typeof appRouteRoute
     }
   }
 }
 
-interface ChatRouteRouteChildren {
-  ChatContactsRoute: typeof ChatContactsRoute
-  ChatGroupsRoute: typeof ChatGroupsRoute
-  ChatIndexRoute: typeof ChatIndexRoute
+interface appRouteRouteChildren {
+  appProfileRoute: typeof appProfileRoute
+  appIndexRoute: typeof appIndexRoute
 }
 
-const ChatRouteRouteChildren: ChatRouteRouteChildren = {
-  ChatContactsRoute: ChatContactsRoute,
-  ChatGroupsRoute: ChatGroupsRoute,
-  ChatIndexRoute: ChatIndexRoute,
+const appRouteRouteChildren: appRouteRouteChildren = {
+  appProfileRoute: appProfileRoute,
+  appIndexRoute: appIndexRoute,
 }
 
-const ChatRouteRouteWithChildren = ChatRouteRoute._addFileChildren(
-  ChatRouteRouteChildren,
+const appRouteRouteWithChildren = appRouteRoute._addFileChildren(
+  appRouteRouteChildren,
 )
 
-interface AuthRouteChildren {
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthRegisterRoute: typeof AuthRegisterRoute
+interface authRouteRouteChildren {
+  authLoginRoute: typeof authLoginRoute
+  authRegisterRoute: typeof authRegisterRoute
 }
 
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthLoginRoute: AuthLoginRoute,
-  AuthRegisterRoute: AuthRegisterRoute,
+const authRouteRouteChildren: authRouteRouteChildren = {
+  authLoginRoute: authLoginRoute,
+  authRegisterRoute: authRegisterRoute,
 }
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
+  authRouteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
-  ChatRouteRoute: ChatRouteRouteWithChildren,
-  AuthRoute: AuthRouteWithChildren,
+  appRouteRoute: appRouteRouteWithChildren,
+  authRouteRoute: authRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

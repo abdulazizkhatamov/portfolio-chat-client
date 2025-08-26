@@ -1,11 +1,9 @@
 import { formatDistanceToNow } from 'date-fns'
 import { SearchIcon } from 'lucide-react'
 import { useChat } from '../hooks/useChat'
-import type { ComponentProps } from 'react'
+import type { Chat } from '../api/chat.types'
 
-import type { Chat } from '@/features/chat/data'
 import { cn } from '@/core/lib/utils'
-import { Badge } from '@/shared/components/ui/badge'
 import { Input } from '@/shared/components/ui/input'
 import { ScrollArea } from '@/shared/components/ui/scroll-area'
 
@@ -17,7 +15,8 @@ export function ChatList({ items }: ChatListProps) {
   const { selectedChatId, setSelectedChatId } = useChat()
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
+      {/* Search */}
       <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <form>
           <div className="relative">
@@ -26,73 +25,57 @@ export function ChatList({ items }: ChatListProps) {
           </div>
         </form>
       </div>
-      <ScrollArea className="h-screen">
+
+      {/* Chat List */}
+      <ScrollArea className="flex-1">
         <div className="flex flex-col gap-2 p-4 pt-0">
-          {items.map((item) => (
-            <button
-              key={item.id}
-              className={cn(
-                'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
-                selectedChatId === item.id && 'bg-muted',
-              )}
-              onClick={() => setSelectedChatId(item.id)}
-            >
-              <div className="flex w-full flex-col gap-1">
-                <div className="flex items-center">
-                  <div className="flex items-center gap-2">
-                    <div className="font-semibold">{item.name}</div>
-                    {!item.read && (
-                      <span className="flex h-2 w-2 rounded-full bg-blue-600" />
-                    )}
-                  </div>
-                  <div
-                    className={cn(
-                      'ml-auto text-xs',
-                      selectedChatId === item.id
-                        ? 'text-foreground'
-                        : 'text-muted-foreground',
-                    )}
-                  >
-                    {formatDistanceToNow(new Date(item.date), {
-                      addSuffix: true,
-                    })}
-                  </div>
-                </div>
-                <div className="text-xs font-medium">{item.subject}</div>
-              </div>
-              <div className="line-clamp-2 text-xs text-muted-foreground">
-                {item.text.substring(0, 300)}
-              </div>
-              {item.labels.length ? (
-                <div className="flex items-center gap-2">
-                  {item.labels.map((label) => (
-                    <Badge
-                      key={label}
-                      variant={getBadgeVariantFromLabel(label)}
+          {items.length === 0 && (
+            <div className="text-muted-foreground text-sm text-center mt-4">
+              No conversations yet
+            </div>
+          )}
+
+          {items.map((item) => {
+            const lastMessageText = item.lastMessage?.content ?? ''
+
+            return (
+              <button
+                key={item._id}
+                className={cn(
+                  'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
+                  selectedChatId === item._id && 'bg-muted',
+                )}
+                onClick={() => setSelectedChatId(item._id)}
+              >
+                <div className="flex w-full flex-col gap-1">
+                  <div className="flex items-center">
+                    <div className="flex items-center gap-2">
+                      <div className="font-semibold">{item.name}</div>
+                    </div>
+                    <div
+                      className={cn(
+                        'ml-auto text-xs',
+                        selectedChatId === item._id
+                          ? 'text-foreground'
+                          : 'text-muted-foreground',
+                      )}
                     >
-                      {label}
-                    </Badge>
-                  ))}
+                      {formatDistanceToNow(
+                        new Date(item.updatedAt || item.createdAt),
+                        { addSuffix: true },
+                      )}
+                    </div>
+                  </div>
                 </div>
-              ) : null}
-            </button>
-          ))}
+
+                <div className="line-clamp-2 text-xs text-muted-foreground">
+                  {lastMessageText.substring(0, 300)}
+                </div>
+              </button>
+            )
+          })}
         </div>
       </ScrollArea>
     </div>
   )
-}
-
-function getBadgeVariantFromLabel(
-  label: string,
-): ComponentProps<typeof Badge>['variant'] {
-  if (['work'].includes(label.toLowerCase())) {
-    return 'default'
-  }
-
-  if (['personal'].includes(label.toLowerCase())) {
-    return 'outline'
-  }
-
-  return 'secondary'
 }

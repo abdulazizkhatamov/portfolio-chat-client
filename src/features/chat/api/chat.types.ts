@@ -12,6 +12,7 @@ export interface ChatMember {
 
 export interface Message {
   _id: string
+  chat: string
   content: string
   sender: ChatMember
   createdAt: string

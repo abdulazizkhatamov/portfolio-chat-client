@@ -6,6 +6,7 @@ import type { Chat } from '../api/chat.types'
 import { cn } from '@/core/lib/utils'
 import { Input } from '@/shared/components/ui/input'
 import { ScrollArea } from '@/shared/components/ui/scroll-area'
+import { socket } from '@/config/socket.config'
 
 interface ChatListProps {
   items: Array<Chat>
@@ -45,7 +46,11 @@ export function ChatList({ items }: ChatListProps) {
                   'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
                   selectedChatId === item._id && 'bg-muted',
                 )}
-                onClick={() => setSelectedChatId(item._id)}
+                onClick={() => {
+                  socket.emit('joinChat', item._id)
+
+                  setSelectedChatId(item._id)
+                }}
               >
                 <div className="flex w-full flex-col gap-1">
                   <div className="flex items-center">

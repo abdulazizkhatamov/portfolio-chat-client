@@ -1,6 +1,6 @@
 // src/shared/lib/api.ts
 import axios from 'axios'
-import { env } from '@/config/env'
+import { env } from '@/config/env.config'
 
 // In-memory storage for CSRF token
 let csrfToken: string | null = null

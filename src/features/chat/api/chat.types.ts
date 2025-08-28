@@ -15,9 +15,10 @@ export interface Message {
   chat: string
   content: string
   sender: ChatMember
-  createdAt: string
   edited?: boolean
   deleted?: boolean
+  createdAt: string
+  updatedAt: string
 }
 
 export interface Chat {
